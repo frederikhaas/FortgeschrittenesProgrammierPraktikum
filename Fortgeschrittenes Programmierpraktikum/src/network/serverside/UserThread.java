@@ -117,7 +117,8 @@ public class UserThread extends Thread {
 		case Comm.INVITE_ACCEPTED_COMM_CODE:
 			String accepted = message.substring(message.indexOf(";") + 1, message.indexOf(":"));
 			String name = message.substring(0, message.indexOf(";"));
-			server.onlineUsers.get(name).sentMessageToClient(Comm.encode(userName + message.substring(message.indexOf(";")), Comm.INVITE_ACCEPTED_COMM_CODE));
+			server.onlineUsers.get(name).sentMessageToClient(
+					Comm.encode(userName + message.substring(message.indexOf(";")), Comm.INVITE_ACCEPTED_COMM_CODE));
 			if (accepted.equals("false")) {
 				server.availableUsers.put(userName, this);
 				server.availableUsers.put(name, server.onlineUsers.get(name));
@@ -128,8 +129,10 @@ public class UserThread extends Thread {
 			}
 			break;
 		case Comm.INVITE_CANCELED_COMM_CODE:
-			server.onlineUsers.get(message).sentMessageToClient(Comm.encode("", Comm.INVITE_CANCELED_COMM_CODE));
-			broadcastMessage(Comm.encode(message, Comm.AVAILABLE_PLAYERS_COMM_CODE));
+			if (!(message.equals("pc") || message.equals(""))) {
+				server.onlineUsers.get(message).sentMessageToClient(Comm.encode("", Comm.INVITE_CANCELED_COMM_CODE));
+				broadcastMessage(Comm.encode(message, Comm.AVAILABLE_PLAYERS_COMM_CODE));
+			}
 			break;
 		case Comm.NEW_GAME_COMM_CODE: // sent by invite-sender together with game-data in format : decodedMessage =
 										// gamename:player1-player2

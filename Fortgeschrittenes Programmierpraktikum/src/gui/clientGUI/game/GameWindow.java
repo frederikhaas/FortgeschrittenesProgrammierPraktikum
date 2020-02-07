@@ -29,6 +29,7 @@ public class GameWindow {
 	public JButton quitButton = new JButton("quit");
 	public GameboardGUI gameboard;
 	public String gamename;
+	public boolean quit;
 	
 	public GameWindow(Client client, String gamename, String player1, String player2, boolean myTurn) {
 		client.isIngame = true;
@@ -79,7 +80,7 @@ public class GameWindow {
 		quitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ConfirmQuitDialog cqd = new ConfirmQuitDialog(client);
-				boolean quit = cqd.quit;
+				quit = cqd.quit;
 				if(quit) {
 					client.sendMessage(Comm.encode(client.invited, Comm.GAME_QUIT_COMM_CODE));
 					client.invited = "";

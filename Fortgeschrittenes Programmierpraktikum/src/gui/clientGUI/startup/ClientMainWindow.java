@@ -74,14 +74,16 @@ public class ClientMainWindow {
 			public void actionPerformed(ActionEvent e) {
 				if (client.isIngame) {
 					client.gameWindow.quitButton.doClick();
-				}
-				if (client.invited != "") {
-					client.sendMessage(Comm.encode(client.invited, Comm.INVITE_CANCELED_COMM_CODE));
-				}
-				client.sendMessage(Comm.encode("", Comm.LOGOUT_COMM_CODE));
-				for(Window w : client.openWindows) {
-					w.setVisible(false);
-					w.dispose();
+					if (client.gameWindow.quit) {
+						if (client.invited != "pc") {
+							client.sendMessage(Comm.encode(client.invited, Comm.INVITE_CANCELED_COMM_CODE));
+						}
+						client.sendMessage(Comm.encode("", Comm.LOGOUT_COMM_CODE));
+						for (Window w : client.openWindows) {
+							w.setVisible(false);
+							w.dispose();
+						}
+					}
 				}
 			}
 		});
