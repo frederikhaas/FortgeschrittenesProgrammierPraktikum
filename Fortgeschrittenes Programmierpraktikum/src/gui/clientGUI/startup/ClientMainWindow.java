@@ -85,6 +85,20 @@ public class ClientMainWindow {
 						}
 					}
 				}
+				else if (client.invited != "") {
+					client.sendMessage(Comm.encode(client.invited, Comm.INVITE_CANCELED_COMM_CODE));
+					client.sendMessage(Comm.encode("", Comm.LOGOUT_COMM_CODE));
+					for (Window w : client.openWindows) {
+						w.setVisible(false);
+						w.dispose();
+					}
+				} else {
+					client.sendMessage(Comm.encode("", Comm.LOGOUT_COMM_CODE));
+					for (Window w : client.openWindows) {
+						w.setVisible(false);
+						w.dispose();
+					}
+				}
 			}
 		});
 
