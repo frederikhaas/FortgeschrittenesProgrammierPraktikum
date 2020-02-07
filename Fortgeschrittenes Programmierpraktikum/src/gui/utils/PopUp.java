@@ -15,7 +15,7 @@ import network.clientside.Client;
 public class PopUp {
 	
 	public PopUp(String message) {
-		int width = message.length() * 8;
+		int width = message.length() * 10;
 		int height = 20 * message.split("\\n").length;
 		
 		StandardJDialog dialog = new StandardJDialog(new Dimension(width, 100 + height), null);

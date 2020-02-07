@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,7 +23,7 @@ import utils.Comm;
 
 public class PlayerChoiceWindow {
 
-	StandardJFrame frame = new StandardJFrame("Choose wisely!", new Dimension(400, 400), JFrame.DISPOSE_ON_CLOSE);
+	StandardJFrame frame = new StandardJFrame("Choose wisely!", new Dimension(400, 400), JFrame.DO_NOTHING_ON_CLOSE);
 	JLabel promptLabel = new JLabel();
 	JList<String> availablePlayers;
 	JTextField nameInputField = new JTextField();
@@ -30,7 +32,7 @@ public class PlayerChoiceWindow {
 	public PlayerChoiceWindow(Client client, String gamename) {
 
 		client.openWindows.add(frame);
-		
+
 		promptLabel.setText("Who would You like to play " + gamename + " with?");
 		promptLabel.setPreferredSize(new Dimension(380, 20));
 
@@ -58,6 +60,14 @@ public class PlayerChoiceWindow {
 		gbc.insets = new Insets(10, 20, 10, 20);
 		frame.add(inviteButton, gbc);
 
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				client.starting = false;
+				frame.setVisible(false);
+				frame.dispose();
+			}
+		});
+
 		nameInputField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				inviteButton.doClick();
@@ -71,6 +81,7 @@ public class PlayerChoiceWindow {
 					if (!(client.invited.equals(""))) {
 						TooManyInvitesDialog tmid = new TooManyInvitesDialog(client, client.invited);
 						if (tmid.cancelOldInvite) {
+							client.starting = false;
 							client.sendMessage(Comm.encode(client.invited, Comm.INVITE_CANCELED_COMM_CODE));
 							client.invited = name;
 							client.sendMessage(Comm.encode(gamename + ";" + name, Comm.INVITE_COMM_CODE));
@@ -80,6 +91,7 @@ public class PlayerChoiceWindow {
 							frame.dispose();
 						}
 					} else {
+						client.starting = false;
 						client.invited = name;
 						client.sendMessage(Comm.encode(gamename + ";" + name, Comm.INVITE_COMM_CODE));
 //						InviteSentWindow isw = new InviteSentWindow(name, gamename, client);

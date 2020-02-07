@@ -34,6 +34,8 @@ public class Client {
 	public boolean isIngame = false;
 	public String invited = "";
 	public Vector<String> availablePlayers = new Vector<String>();
+	public ArrayList<Window> openGameStartup = new ArrayList<Window>();
+	public boolean starting = false;
 
 	//frontend
 	public ArrayList<Window> openWindows = new ArrayList<Window>();

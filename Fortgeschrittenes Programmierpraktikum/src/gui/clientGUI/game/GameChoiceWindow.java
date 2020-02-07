@@ -17,7 +17,7 @@ import network.clientside.Client;
 
 public class GameChoiceWindow {
 	
-	JFrame frame = new JFrame("Choose a game");
+	public JFrame frame = new JFrame("Choose a game");
 	JLabel promptLabel = new JLabel("Which game would You like to play?");
 	JButton connectfourButton = new JButton("Connect Four");
 	JButton chompButton = new JButton("Chomp!");
@@ -52,6 +52,7 @@ public class GameChoiceWindow {
 		
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
+				client.starting = false;
 				client.openWindows.remove(frame);
 				frame.setVisible(false);
 				frame.dispose();
@@ -60,8 +61,9 @@ public class GameChoiceWindow {
 		
 		connectfourButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ModeChoiceWindow(client, "Connect Four");	
+				client.openGameStartup.add(new ModeChoiceWindow(client, "Connect Four").frame);	
 				client.openWindows.remove(frame);
+				client.openGameStartup.remove(frame);
 				frame.setVisible(false);
 				frame.dispose();
 			}
@@ -69,8 +71,9 @@ public class GameChoiceWindow {
 		
 		chompButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new ModeChoiceWindow(client, "Chomp");
+				client.openGameStartup.add(new ModeChoiceWindow(client, "Chomp").frame);
 				client.openWindows.remove(frame);
+				client.openGameStartup.remove(frame);
 				frame.setVisible(false);
 				frame.dispose();
 			}

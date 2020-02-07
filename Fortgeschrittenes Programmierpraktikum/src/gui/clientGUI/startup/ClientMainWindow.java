@@ -105,7 +105,14 @@ public class ClientMainWindow {
 		gameButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!client.isIngame) {
-					new GameChoiceWindow(client);
+					if (client.starting) {
+						for (Window w : client.openGameStartup) {
+							w.setVisible(false);
+							w.dispose();
+						}
+					}
+					client.openGameStartup.add(new GameChoiceWindow(client).frame);
+					client.starting = true;
 				}
 			}
 		});

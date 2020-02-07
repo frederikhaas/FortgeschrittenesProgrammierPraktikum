@@ -25,7 +25,7 @@ public class ModeChoiceWindow {
 	JLabel textLabel1 = new JLabel("another");
 	JButton playerButton = new JButton("player?");
 	JLabel textLabel2 = new JLabel("or the");
-	JButton pcButton = new JButton("computer?");
+	JButton pcButton = new JButton("pc?");
 
 	public ModeChoiceWindow(Client client, String gamename) {
 		frame = new StandardJFrame(gamename, new Dimension(360, 160), JFrame.DO_NOTHING_ON_CLOSE);
@@ -63,6 +63,7 @@ public class ModeChoiceWindow {
 
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
+				client.starting = false;
 				client.openWindows.remove(frame);
 				frame.setVisible(false);
 				frame.dispose();
@@ -71,7 +72,8 @@ public class ModeChoiceWindow {
 
 		playerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new PlayerChoiceWindow(client, gamename);
+				client.openGameStartup.add(new PlayerChoiceWindow(client, gamename).frame);
+				client.openGameStartup.remove(frame);
 				client.openWindows.remove(frame);
 				frame.setVisible(false);
 				frame.dispose();
@@ -81,23 +83,27 @@ public class ModeChoiceWindow {
 		pcButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (client.invited.equals("")) {
+					client.starting = false;
 					client.sendMessage(Comm.encode(client.name, Comm.UNAVAILABLE_PLAYER_COMM_CODE));
 					client.sendMessage(Comm.encode(gamename + ":" + client.name + "-" + "pc", Comm.NEW_GAME_COMM_CODE));
 					client.isIngame = true;
 					client.invited = "pc";
-					new GameWindow(client, gamename, client.name, "pc", true);
+					client.openGameStartup.remove(frame);
+					client.openGameStartup.add(new GameWindow(client, gamename, client.name, "pc", true).frame);
 					client.openWindows.remove(frame);
 					frame.setVisible(false);
 					frame.dispose();
 				} else {
 					TooManyInvitesDialog tmid = new TooManyInvitesDialog(client, client.invited);
 					if(tmid.cancelOldInvite) {
+						client.starting = false;
 						client.sendMessage(Comm.encode(client.invited, Comm.INVITE_CANCELED_COMM_CODE));
 						client.invited = "pc";
+						client.openGameStartup.remove(frame);
 						client.openWindows.remove(frame);
 						frame.setVisible(false);
 						frame.dispose();
-						new GameWindow(client, gamename, client.name, "pc", true);
+						client.openGameStartup.add(new GameWindow(client, gamename, client.name, "pc", true).frame);
 					}
 				}
 			}
