@@ -14,5 +14,4 @@ public class ServerExe {
 			server.runServer();
 		}
 	}
-	
 }

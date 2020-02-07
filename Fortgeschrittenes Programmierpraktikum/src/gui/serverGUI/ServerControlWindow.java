@@ -33,12 +33,12 @@ public class ServerControlWindow {
 	public ServerControlWindow(Server Server) {
 		server = Server;
 		server.scw = this;
-		portLabel.setPreferredSize(new Dimension(200, 20));
+		portLabel.setPreferredSize(new Dimension(300, 20));
 		portLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		portLabel.setText("server running at port : " + server.port);
-		chatLabel.setPreferredSize(new Dimension(100, 20));
-		playerLabel.setPreferredSize(new Dimension(100, 20));
-		gamesLabel.setPreferredSize(new Dimension(100, 20));
+		chatLabel.setPreferredSize(new Dimension(200, 20));
+		playerLabel.setPreferredSize(new Dimension(200, 20));
+		gamesLabel.setPreferredSize(new Dimension(200, 20));
 		stopButton.setPreferredSize(new Dimension(200, 40));
 		
 		GridBagConstraints gbc = new GridBagConstraints();

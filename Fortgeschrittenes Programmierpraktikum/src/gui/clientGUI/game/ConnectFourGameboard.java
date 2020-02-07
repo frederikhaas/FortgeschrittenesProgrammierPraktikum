@@ -152,7 +152,7 @@ public class ConnectFourGameboard extends GameboardGUI {
 		confirmButton.setEnabled(false);
 		undoButton.setText("undo");
 		resetTimer();
-		if(player2 == "pc") {
+		if(player2.equals("pc")) {
 			if (connectFour.checkWin(connectFour.lastSet)) {
 				for(JButton btn : columnButtons) {
 					btn.setEnabled(false);
